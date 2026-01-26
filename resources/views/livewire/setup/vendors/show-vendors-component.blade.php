@@ -1,0 +1,98 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase p-2">
+                    {{ __('Vendors') }}
+                </h5>
+            </div>
+            <div class="col text-center">
+                @include('tools.spinner')
+            </div>
+            <div class="col text-right text-dark">
+                <button class="btn btn-primary btn-rounded text-white" wire:click="$set('add',true)">
+                   <i class="fa fa-plus"></i> {{ __('Add New') }}
+                </button>
+            </div>
+        </div>
+
+            <div class="input-group p-2">
+                <div class="input-group-append">
+                    <select class="form-control" wire:model="numbers" wire:change="page_num">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100000000000">{{ __('Select all') }}</option>
+                    </select>
+                </div>
+
+                {{-- <div class="col-md-6 ">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-dark text-white"><i class="fa fa-search"></i></span>
+                        <input type="text" name="" id="search" class="form-control" wire:model.live="search"/>
+
+                    </div>
+                </div> --}}
+                <!--End of search  -->
+
+            </div>
+        <hr>
+
+        <table class="table table-bordered table-hoverd table-striped text-center">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{ __('Vendor Name') }}</th>
+                <th scope="col">{{ __('Logo') }}</th>
+                <th scope="col">{{ __('Male')  .'/' . __('Female') }}</th>
+
+                <th scope="col">{{ __('status') }}</th>
+                <th scope="col"><i class="fa fa-cogs"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php $i = App\Helpers\PaginationHelper::getStartingNumber($vendors); ?>
+                @forelse ($vendors as  $vendor)
+                <tr>
+                    <th scope="row">{{ $i++ }}</th>
+                    <td>{{ $vendor->name }} </td>
+                    <td>
+                        <a href="{{ asset('storage/' . $vendor->logo) }}" target="_blank">
+                            <img class="" style="width: 50px; height: 50px;" src="{{ asset('storage/' . $vendor->logo) }}" alt="">
+
+                        </a>
+                    </td>
+                    <td>
+                        <img class="" style="width: 50px; height: 50px;"
+                         src="{{
+                         $vendor->type == 0  ? asset('assets/images/avatar/4.png') :
+                         asset('assets/images/avatar/2.png')
+                         }}" alt="">
+                    </td>
+                    <td>
+                        @livewire('switcher', ['model' => $vendor, 'field' => 'status'], key("cat-".$vendor->id))
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-rounded" wire:click="edit({{ $vendor->id }})" >
+                            <i class="fa fa-edit text-white"></i>
+                        </button>
+                    </td>
+                  </tr>
+                @empty
+                @endforelse
+
+            </tbody>
+        </table>
+
+
+    </div>
+    <div class="card-footer">
+
+        <div class="pagination-circle">
+            {{ $vendors->links() }}
+        </div>
+
+    </div>
+</div>

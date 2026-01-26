@@ -1,0 +1,13 @@
+<div>
+    @section('title',__('Offers'))
+    @if($add)
+    @include('livewire.setup.offers.add-offer')
+    @elseif($delete)
+    @include('livewire.setup.offers.delete-offer')
+    @else
+    @include('livewire.setup.offers.show-offer')
+    @endif
+</div>
+@script
+    @include('tools.message')
+@endscript

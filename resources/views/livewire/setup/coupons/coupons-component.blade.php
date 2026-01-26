@@ -1,0 +1,11 @@
+<div>
+    @section('title',__('Coupons'))
+    @if($add)
+    @include('livewire.setup.coupons.add-coupons')
+    @else
+    @include('livewire.setup.coupons.show-coupons')
+    @endif
+</div>
+@script
+    @include('tools.message')
+@endscript
