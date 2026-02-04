@@ -24,7 +24,20 @@ use App\Http\Controllers\Api\vendorCategoriesController;
 use App\Http\Controllers\Api\VendorsController;
 use App\Http\Controllers\Api\VendorsItemsController;
 use Illuminate\Support\Facades\Route;
+use App\Models\customers;
 
+
+Route::get('/send-to-all', function () {
+    $title = "إعلان جديد 📢";
+    $body = "يا شباب عندنا عرض جديد لكل مستخدمي التطبيق!";
+
+    $result = customers::sendToAll($title, $body, ['type' => 'offer']);
+
+    return response()->json([
+        'message' => 'تمت عملية الإرسال الجماعي',
+        'details' => $result
+    ]);
+});
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
