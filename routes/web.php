@@ -25,6 +25,7 @@ use App\Livewire\VendorSide\Sections\SectionsComponent;
 use App\Livewire\VendorSide\Status\StatusComponent;
 use App\Livewire\VendorSide\VendorsDashboardComponent;
 use App\Models\areas;
+use App\Models\customers;
 use GPBMetadata\Google\Rpc\Status;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,18 @@ Route::get('/storage-link', function () {
 
 Route::get('/firebase-messaging-sw.js', function () {
     return response()->file(public_path('firebase-messaging-sw.js'));
+});
+
+Route::get('/send-to-all', function () {
+    $title = "إعلان جديد 📢";
+    $body = "يا شباب عندنا عرض جديد لكل مستخدمي التطبيق!";
+
+    $result = customers::sendToAll($title, $body, ['type' => 'offer']);
+
+    return response()->json([
+        'message' => 'تمت عملية الإرسال الجماعي',
+        'details' => $result
+    ]);
 });
 
 Route::group(

@@ -53,7 +53,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/market/store', [MarketOrderController::class, 'store']);
 });
 
-/*End Customers Register & Login and Logout */
+/* End Customers Register & Login and Logout */
 Route::get('home-page-sections', [HomePageSectionsController::class, 'index']);
 Route::get('users', [UsersController::class, 'index']);
 Route::get('products', [ProductsController::class, 'index']);
@@ -75,7 +75,6 @@ Route::get('vendor/categories/{id}', [vendorCategoriesController::class, 'index'
 Route::get('vendor/items/{id}', [VendorsItemsController::class, 'index']); // search by categories
 Route::get('vendor/items/show_all/{id}', [VendorsItemsController::class, 'showAll']);
 Route::get('market/items', [MarketController::class, 'items']);
-
 
 // Route::middleware('auth:sanctum')->post('/save-fcm-token', [FCMController::class, 'store']);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -41,23 +42,32 @@ class CustomerAuthController extends Controller
         $request->validate([
             'email'    => 'required|email',
             'password' => 'required',
+            'fcm_token' => 'nullable|string',
         ]);
 
         $customer = customers::where('email', $request->email)->first();
 
-        if (! $customer || ! Hash::check($request->password, $customer->password)) {
+        if (!$customer || !Hash::check($request->password, $customer->password)) {
             return response()->json(['message' => 'بيانات الدخول غير صحيحة'], 401);
         }
 
-        $token = $customer->createToken('CustomerToken')->plainTextToken;
-        if ($token) {
-            $customer->fcm_token = $token;
-            $customer->save();
+        // تحديث التوكن وحفظه
+        $customer->fcm_token = $request->fcm_token;
+        $updated = $customer->save();
+
+        if (!$updated) {
+            return response()->json([
+                'message' => __('Token not sent'),
+            ], 400);
         }
+
+        // إنشاء توكن Sanctum بعد التأكد من التحديث
+        $token = $customer->createToken('CustomerToken')->plainTextToken;
+
         return response()->json([
-            'message'  => __('Done Login Successfully'),
-            'token'    => $token,
-            'customer' => $customer,
+            'message'   => __('Done Login Successfully'),
+            'token'     => $token,
+            'customer'  => $customer, // دلوقتي هيرجع بالـ fcm_token الجديد
         ]);
     }
 
